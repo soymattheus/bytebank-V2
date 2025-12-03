@@ -1,15 +1,8 @@
 import api from './api';
 import { buscaTransacoes } from './transacoes';
+import { buscaSaldo } from './saldo';
 
 jest.mock('./api');
-
-const mockTransacao = {
-    id: 1,
-    transacao: 'Depósito',
-    valor: '100',
-    data: '03/12/2025',
-    mes: 'Dezembro',
-};
 
 const mockRequisicao = (retorno) => {
     return new Promise((resolve) => {
@@ -21,12 +14,24 @@ const mockRequisicao = (retorno) => {
     });
 };
 
+const mockTransacao = {
+    id: 1,
+    transacao: 'Depósito',
+    valor: '100',
+    data: '03/12/2025',
+    mes: 'Dezembro',
+};
+
 const mockRequisicaoErro = () => {
     return new Promise((_, reject) => {
         setTimeout(() => {
             reject();
         }, 200);
     });
+};
+
+const mockSaldo = {
+    valor: 1000,
 };
 
 describe('Requisições para a API', () => {
@@ -42,5 +47,12 @@ describe('Requisições para a API', () => {
 
         const transacoes = await buscaTransacoes();
         expect(transacoes).toEqual([]);
+    });
+
+    test('Deve retornar o saldo', async () => {
+        api.get.mockImplementation(() => mockRequisicao(mockSaldo));
+
+        const saldo = await buscaSaldo();
+        expect(saldo).toEqual(mockSaldo.valor);
     });
 });
