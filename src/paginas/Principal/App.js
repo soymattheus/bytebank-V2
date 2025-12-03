@@ -13,33 +13,33 @@ import Principal from '../../componentes/Principal';
 import Transacao from '../../componentes/Transacao';
 
 export default function App() {
-  const [saldo, setSaldo] = useSaldo();
-  const [transacoes, setTransacoes] = useListaTransacoes();
-  const location = useLocation();
+    const [saldo, setSaldo] = useSaldo();
+    const [transacoes, setTransacoes] = useListaTransacoes();
+    const location = useLocation();
 
-  function realizarTransacao(valores) {
-    const novoSaldo = calculaNovoSaldo(valores, saldo);
-    setSaldo(novoSaldo);
-    atualizaSaldo(novoSaldo);
-    setTransacoes([...transacoes, valores]);
-    salvaTransacao(valores);
-  }
+    function realizarTransacao(valores) {
+        const novoSaldo = calculaNovoSaldo(valores, saldo);
+        setSaldo(novoSaldo);
+        atualizaSaldo(novoSaldo);
+        setTransacoes([...transacoes, valores]);
+        salvaTransacao(valores);
+    }
 
-  return (
-    <>
-      <Cabecalho />
-      <main className={estilos.caixa}>
-        <Menu path={location.pathname} />
-        <div className={estilos.envelope}>
-          <Principal saldo={saldo} />
-          {location.pathname === '/' && (
-            <Transacao realizarTransacao={realizarTransacao} />
-          )}
-          <Outlet />
-          <noscript data-testid="local">{location.pathname}</noscript>
-        </div>
-        <Extrato transacoes={transacoes} />
-      </main>
-    </>
-  );
+    return (
+        <>
+            <Cabecalho />
+            <main className={estilos.caixa}>
+                <Menu path={location.pathname} />
+                <div className={estilos.envelope}>
+                    <Principal saldo={saldo} />
+                    {location.pathname === '/' && (
+                        <Transacao realizarTransacao={realizarTransacao} />
+                    )}
+                    <Outlet />
+                    <noscript data-testid="local">{location.pathname}</noscript>
+                </div>
+                <Extrato transacoes={transacoes} />
+            </main>
+        </>
+    );
 }
