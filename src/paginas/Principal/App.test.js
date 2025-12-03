@@ -22,7 +22,7 @@ describe('Componente <App/>', () => {
         expect(novaTransacao).toContainElement(itemExtrato);
     });
 
-    test('Deve navegar até a página correspondente ao link clicado', async () => {
+    test('Deve navegar até a página Cartões', async () => {
         render(<AppRoutes />, { wrapper: BrowserRouter });
 
         const cartoesLink = screen.getByText('Cartões');
@@ -32,5 +32,17 @@ describe('Componente <App/>', () => {
 
         const paginaCartoes = await screen.findByText('Meus cartões');
         expect(paginaCartoes).toBeInTheDocument();
+    });
+
+    test('Deve navegar até a página Investimentos', async () => {
+        render(<AppRoutes />, { wrapper: BrowserRouter });
+
+        const investimentosLink = screen.getByText('Investimentos');
+        expect(investimentosLink).toBeInTheDocument();
+
+        userEvent.click(investimentosLink);
+
+        const paginainvestimentos = screen.getByTestId('investimentos');
+        expect(paginainvestimentos).toBeInTheDocument();
     });
 });

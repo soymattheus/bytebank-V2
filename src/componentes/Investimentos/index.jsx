@@ -5,7 +5,7 @@ import estilos from './Investimentos.module.css';
 
 export default function Investimentos() {
   return (
-    <section className="container">
+    <section data-testid="investimentos" className="container">
       <div className="detalhe__superior" />
       <div className={estilos.wrapper}>
         <div className={estilos.investimentos}>
