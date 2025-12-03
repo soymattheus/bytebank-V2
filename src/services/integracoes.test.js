@@ -1,5 +1,5 @@
 import api from './api';
-import { buscaTransacoes } from './transacoes';
+import { buscaTransacoes, salvaTransacao } from './transacoes';
 import { buscaSaldo } from './saldo';
 
 jest.mock('./api');
@@ -10,6 +10,24 @@ const mockRequisicao = (retorno) => {
             resolve({
                 data: retorno,
             });
+        }, 200);
+    });
+};
+
+const mockRequisicaoPost = () => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({
+                status: 201,
+            });
+        }, 200);
+    });
+};
+
+const mockRequisicaoPostErro = () => {
+    return new Promise((_, reject) => {
+        setTimeout(() => {
+            reject();
         }, 200);
     });
 };
@@ -54,5 +72,19 @@ describe('Requisições para a API', () => {
 
         const saldo = await buscaSaldo();
         expect(saldo).toEqual(mockSaldo.valor);
+    });
+
+    test('Deve retornar um status 201 - (Created) após uma requisição POST', async () => {
+        api.post.mockImplementation(() => mockRequisicaoPost());
+        const status = await salvaTransacao(mockTransacao);
+        expect(status).toBe(201);
+        expect(api.post).toHaveBeenCalledWith('/transacoes', mockTransacao);
+    });
+
+    test('Deve retornar um saldo de 1000 quando a requisição POST falhar', async () => {
+        api.post.mockImplementation(() => mockRequisicaoPostErro());
+        const status = await salvaTransacao(mockTransacao[0]);
+        expect(status).toBe('Erro na requisição');
+        expect(api.post).toHaveBeenCalledWith('/transacoes', mockTransacao[0]);
     });
 });
