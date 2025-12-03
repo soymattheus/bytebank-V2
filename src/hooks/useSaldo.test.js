@@ -10,7 +10,7 @@ const mockSaldo = {
 
 describe('hooks/useSaldo.js', () => {
     test('Deve retornar o saldo atualizado', async () => {
-        buscaSaldo.mockImplementation(() => mockSaldo);
+        buscaSaldo.mockImplementation(() => mockSaldo.valor);
 
         const { result } = renderHook(() => useSaldo());
         expect(result.current[0]).toEqual(0);
@@ -19,6 +19,6 @@ describe('hooks/useSaldo.js', () => {
             result.current[1]();
         });
 
-        expect(result.current[0]).toEqual(mockSaldo);
+        expect(result.current[0]).toEqual(mockSaldo.valor);
     });
 });

@@ -74,6 +74,13 @@ describe('Requisições para a API', () => {
         expect(saldo).toEqual(mockSaldo.valor);
     });
 
+    test('Deve retornar erro do saldo', async () => {
+        api.get.mockImplementation(() => mockRequisicaoErro(mockSaldo));
+
+        const saldo = await buscaSaldo();
+        expect(saldo).toEqual(1000);
+    });
+
     test('Deve retornar um status 201 - (Created) após uma requisição POST', async () => {
         api.post.mockImplementation(() => mockRequisicaoPost());
         const status = await salvaTransacao(mockTransacao);

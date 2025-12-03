@@ -13,7 +13,20 @@ const mockTransacao = {
 };
 
 describe('hooks/useListaTransacoes.js', () => {
-    test('Deve retornar uma lista de trnasações e uma gunção que a atualiza', async () => {
+    test('Deve retornar uma lista de transações e uma função que a atualiza', async () => {
+        buscaTransacoes.mockImplementation(() => mockTransacao);
+
+        const { result } = renderHook(() => useListaTransacoes());
+        expect(result.current[0]).toEqual([]);
+
+        await act(async () => {
+            result.current[1]();
+        });
+
+        expect(result.current[0]).toEqual(mockTransacao);
+    });
+
+    test('Deve retornar um erro', async () => {
         buscaTransacoes.mockImplementation(() => mockTransacao);
 
         const { result } = renderHook(() => useListaTransacoes());
