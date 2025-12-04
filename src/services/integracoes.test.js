@@ -1,6 +1,6 @@
 import api from './api';
 import { buscaTransacoes, salvaTransacao } from './transacoes';
-import { buscaSaldo } from './saldo';
+import { buscaSaldo, atualizaSaldo } from './saldo';
 
 jest.mock('./api');
 
@@ -93,5 +93,17 @@ describe('Requisições para a API', () => {
         const status = await salvaTransacao(mockTransacao[0]);
         expect(status).toBe('Erro na requisição');
         expect(api.post).toHaveBeenCalledWith('/transacoes', mockTransacao[0]);
+    });
+
+    test('Deve atualizar o saldo', async () => {
+        api.put.mockImplementation(() => mockRequisicaoPost());
+        const status = await atualizaSaldo(mockSaldo.valor);
+        expect(status).toBe(201);
+    });
+
+    test('Deve retornar erro no atualizar saldo', async () => {
+        api.put.mockImplementation(() => mockRequisicaoPostErro());
+        const status = await atualizaSaldo(mockSaldo.valor);
+        expect(status).toBe('Erro na requisição');
     });
 });
